@@ -1,0 +1,58 @@
+﻿
+<div class="container-login100" style="">
+    <div class="wrap-login100">
+        <form class="login100-form validate-form">
+            <span class="login100-form-logo">
+                <img src="~/Assets/images/LogoCuadrado.png" width="85" height="85" alt="" />
+            </span>
+
+            <span class="login100-form-title p-b-34 p-t-27">
+                Iniciar sesion
+
+            </span>
+
+            <div id="Mensaje"></div>
+
+            <span>
+                <br>
+            </span>
+
+            <div class="wrap-input100 validate-input" data-validate="Enter username">
+                <input class="input100" type="text" name="username" placeholder="Usuario" id="txtUsuario" required>
+                <span class="focus-input100" data-placeholder="&#xf207;"></span>
+            </div>
+            <div class="wrap-input100 validate-input" data-validate="Enter password">
+                <input class="input100" type="password" name="pass" placeholder="Contraseña" id="txtClave" required>
+                <span class="focus-input100" data-placeholder="&#xf191;"></span>
+            </div>
+            <div class="container-login100-form-btn">
+                <a class="login100-form-btn" onclick="ValidarUsuario()">INGRESAR</a>
+            </div>
+                      
+        </form>
+    </div>
+</div>
+<script>
+
+    function ValidarUsuario() {
+        if ($("#txtUsuario").val() == "")
+        { alert("No ha digitado el usuario"); window.location.href = "login"; }
+        if ($("#txtClave").val() == "")
+        { alert("No ha digitado la clave"); window.location.href = "login"; }
+
+        $.get("http://www.desarrollowa.somee.com/api/Usuario", { pUsuario: $("#txtUsuario").val() })
+        .done(function (response) {
+            console.log(response);
+            $.each(response, function (id, fila) {
+                if($("#txtClave").val() == fila.Clave)
+                {
+                    alert("Bienvenido " + fila.Nombre);
+                    window.location.href = "UsuariosGeneral";
+                }
+                else
+                { alert("Clave incorrecta"); }
+            });
+        });
+    }
+
+</script>

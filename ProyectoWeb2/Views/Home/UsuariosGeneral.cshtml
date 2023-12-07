@@ -1,0 +1,65 @@
+﻿@*<div class="container-login100" style="">
+    <div class="wrap-login100">
+        <form class="login100-form validate-form">*@
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Usuario</th>
+                            <th scope="col">Nombre</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+@*</form>
+        </div>
+    </div>*@
+<script>
+
+    window.onload = Obtener();
+
+    function Obtener(){
+            $(".table tbody").html("");
+            $.get("http://www.desarrollowa.somee.com/api/Usuario")
+            .done(function( response ) {
+                console.log(response);
+                $.each( response, function( id, fila ) {
+                    $("<tr>").append(
+                        $("<td>").text(fila.Usuario),
+                        $("<td>").text(fila.Nombre),
+                        $("<td>").append(
+                            $("<button>").data("pUsuario",fila.Usuario).addClass("btn btn-success btn-sm mr-1 editar").text("Editar").attr({"type":"button"}),
+                            $("<button>").data("pUsuario",fila.Usuario).addClass("btn btn-danger btn-sm eliminar").text("Eliminar").attr({"type":"button"})
+                        )
+                    ).appendTo(".table");
+                });
+            });
+    }
+
+    function IrFormularioCrear() {
+        window.location = "Registro.html";
+    }
+
+
+    $(document).on('click', '.editar', function () {
+        console.log($(this).data("pUsuario"));
+        window.location = "UsuariosRegistrar?pUsuario=" + $(this).data("pUsuario");
+
+    });
+
+
+    $(document).on('click', '.eliminar', function () {
+        console.log($(this).data("pUsuario"));
+        window.location = "UsuariosEliminar?pUsuario=" + $(this).data("pUsuario");
+    });
+
+
+</script>

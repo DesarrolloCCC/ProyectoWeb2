@@ -1,0 +1,51 @@
+﻿@model List<model.ConfigTipos>
+@{
+    ViewBag.Title = "Listado de Tipos de configuraciones";
+}
+
+<div class="panel panel-primary">
+    <h3 style="text-align:center;" >@ViewBag.Title</h3>
+    <div class="panel-heading" style="text-align:center; font-size:large; ">
+        <div class="row">
+            <div class="col-md-1" align="center" style="width:20px">
+                <b><p style="color:white">ID</p></b>
+            </div>
+            <div class="col-md-10" align="center">
+                <p style="color:white"><b>DESCRIPCION</b></p>
+            </div>
+            <div class="col-md-1" align="left" style="width:150px">
+                <a href="~/Home/Index" class="btn btn-primary btn-lg active" style="background-color:forestgreen; color:white;" role="button" aria-pressed="true"><span class="glyphicon glyphicon-plus-sign"></span>     Nuevo</a>
+
+                @*<button class="btn btn-default" href="~/Home/Index"  style="background-color:forestgreen; color:white;">
+                    <span class="glyphicon glyphicon-plus-sign"></span>     Nuevo
+                </button>*@
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <form>
+            <div class="form-group">
+                @foreach (var m in Model)
+                {
+                    <div class="row">
+                        <div class="col-md-1" style="width:20px">
+                            <p>@(m.Id)</p>
+                        </div>
+                        <div class="col-md-9">
+                            <label id="Descripcion_@(m.Id)">@(m.Descripcion)</label>
+                            @*<input type="text" class="form-control" maxlength="200" id="Descripcion_@(m.Id)" value=@(m.Descripcion) disabled ></input>*@
+                        </div>
+                        <div class="col-md-1">
+                            <a class="btn btn-primary" href="~/Home/Tipos" role="button" style="width:90px;">Editar</a>
+                        </div>
+                        <div class="col-md-1">
+                            <a class="btn btn-danger" href="~/Home/Tipos" role="button" style="width:90px;">Eliminar</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </form>
+    </div>
+</div>
+
+

@@ -1,0 +1,125 @@
+﻿
+<div class="container-login100" style="">
+    <div class="wrap-login100">
+        <form class="login100-form validate-form">
+            
+            <span class="login100-form-title p-b-34 p-t-27">
+                Registrar o modificar usuario
+            </span>
+
+            <div id="Mensaje"></div>
+
+            <span>
+                <br>
+            </span>
+
+            <div class="wrap-input100 validate-input" data-validate="Digite usuario">
+                <input class="input100" type="text" name="txtUsuario" placeholder="Usuario" id="txtUsuario" required>
+                <span class="focus-input100" data-placeholder="&#xf207;"></span>
+            </div>
+
+            <div class="wrap-input100 validate-input" data-validate="Digite nombre de usuario">
+                <input class="input100" type="text" name="txtNombre" placeholder="Nombre" id="txtNombre" required>
+                <span class="focus-input100" data-placeholder="&#xf209;"></span>
+            </div>
+            
+            <div class="wrap-input100 validate-input" data-validate="Digite contraseña">
+                <input class="input100" name="txtClave" placeholder="Contraseña" id="txtClave" required>
+                <span class="focus-input100" data-placeholder="&#xf191;"></span>
+            </div>
+
+            <div class="container-login100-form-btn">
+                <button type="button" class="btn btn-success btn-sm mr-1 editar" onclick="GuardarUsuario()">Guardar</button>
+                <button type="button" class="btn btn-danger btn-sm eliminar" onclick="IrFormularioInicio()">Regresar</button>
+            </div>
+            @*<div class="container-login100-form-btn">
+                <button type="button" class="btn btn-warning" onclick="IrFormularioInicio()">Volver</button>
+            </div>*@
+        </form>
+    </div>
+</div>
+<script>
+    var editar = false;
+    window.onload = function () {
+        var Usuario = $.urlParam('pUsuario');
+        console.log(Usuario);
+        if (Usuario != null) {
+            editar = true;
+            $("#txtUsuario").val(Usuario);
+            CargarDataUsuario();
+        } 
+    };
+
+    $.urlParam = function (name) {
+        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+        if (results == null) {
+            return null;
+        }
+        return decodeURI(results[1]) || 0;
+    }
+
+    function IrFormularioInicio() {
+        window.location = "UsuariosGeneral";
+    }
+
+    function CargarDataUsuario() {
+        $.get("http://www.desarrollowa.somee.com/api/Usuario", { pUsuario: $("#txtUsuario").val() })
+        .done(function (response) {
+            console.log(response);
+            $.each(response, function (id, fila) {
+                $("#txtNombre").val(fila.Nombre);
+                $("#txtClave").val(fila.Clave);
+            });
+        });
+    }
+
+
+    function GuardarUsuario() {
+        if (editar) {
+
+            var data = {
+                Usuario: $("#txtUsuario").val(),
+                Nombre: $("#txtNombre").val(),
+                Clave: $("#txtClave").val()
+            }
+
+            $.ajax({
+                method: "PUT",
+                url: "http://www.desarrollowa.somee.com/api/Usuario",
+                contentType: 'application/json',
+                data: JSON.stringify(data), // access in body
+            })
+            .done(function (response) {
+                console.log(response);
+                if (response) {
+                    alert("Se guardaron los cambios");
+                    window.location = "UsuariosGeneral";
+                } else {
+                    alert("Error al Modificar")
+                }
+            });
+
+        } else {
+
+            var data = {
+                Usuario: $("#txtUsuario").val(),
+                Nombre: $("#txtNombre").val(),
+                Clave: $("#txtClave").val()
+            }
+
+            $.post("http://www.desarrollowa.somee.com/api/Usuario", data)
+            .done(function (response) {
+                console.log(response);
+                if (response) {
+                    alert("Usuario Creado");
+                    window.location = "UsuariosGeneral";
+                } else {
+                    alert("Error al crear");
+                }
+            });
+        }
+
+    }
+
+
+</script>
